@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Market Sekolah</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden items-center p-4 rounded-lg shadow-xl text-white transition-all duration-300">
+        <span id="toast-message" class="font-semibold"></span>
+    </div>
+
+    <header id="main-header" class="bg-blue-700 text-white shadow-md sticky top-0 z-40 transition-colors duration-300">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('Beranda')">
+                <div class="bg-amber-400 p-2 rounded-lg text-blue-900 font-bold flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-store text-xl"></i>
+                </div>
+                <div>
+                    <h1 id="header-logo-text" class="font-extrabold text-xl tracking-tight leading-none">Student Market</h1>
+                    <span id="header-logo-sub" class="text-xs text-blue-100 font-medium">Kreativitas Siswa Mandiri</span>
+                </div>
+            </div>
+
+            <div id="user-info-section" class="hidden items-center space-x-4">
+                <div class="hidden md:flex flex-col text-right">
+                    <span id="user-display-name" class="font-semibold text-sm">Nama User</span>
+                    <span id="user-display-role" class="text-xs bg-amber-400 text-blue-950 px-2 py-0.5 rounded-full font-bold self-end mt-0.5">Role</span>
+                </div>
+                <img id="user-display-avatar" src="" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-amber-400 bg-white cursor-pointer">
+                <button onclick="handleLogout()" class="p-1.5 bg-black/20 hover:bg-rose-700 transition rounded-lg text-white" title="Keluar Akun">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+            <div id="guest-info-section" class="bg-amber-400 text-blue-900 px-4 py-1.5 rounded-lg font-bold text-sm shadow">
+                Aplikasi Sekolah
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 pb-24 md:pb-8">
+        
+        <section id="auth-section" class="max-w-md mx-auto my-12 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-700 to-blue-600 p-6 text-center text-white">
+                <div class="w-16 h-16 bg-amber-400 text-blue-900 rounded-2xl mx-auto flex items-center justify-center shadow-lg mb-3">
+                    <i class="fa-solid fa-bag-shopping text-2xl"></i>
+                </div>
+                <h2 id="auth-box-title" class="text-2xl font-bold">Student Market</h2>
+                <p id="auth-box-sub" class="text-sm text-blue-100 mt-1">Kreativitas Siswa Mandiri</p>
+            </div>
+
+            <div class="p-6">
+                <div class="flex bg-slate-100 p-1 rounded-xl mb-6">
+                    <button onclick="toggleAuthMode(false)" id="btn-login-mode" class="flex-1 py-2 text-center rounded-lg font-bold text-sm bg-white text-blue-700 shadow-sm">Masuk</button>
+                    <button onclick="toggleAuthMode(true)" id="btn-reg-mode" class="flex-1 py-2 text-center rounded-lg font-bold text-sm text-slate-500">Daftar Baru</button>
+                </div>
+
+                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Username</label>
+                        <input type="text" id="login-username" placeholder="Masukkan username" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Password</label>
+                        <input type="password" id="login-password" placeholder="Masukkan kata sandi" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl transition shadow-lg shadow-blue-200">Masuk Sekarang</button>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-100 text-center">
+                        <p class="text-xs text-slate-500">Petunjuk Cepat Pengujian:</p>
+                        <div class="flex flex-wrap justify-center gap-2 mt-2">
+                            <button type="button" onclick="quickLogin('pembeli')" class="px-3 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs rounded-full font-bold border border-amber-200">Login Pembeli</button>
+                            <button type="button" onclick="quickLogin('penjual')" class="px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs rounded-full font-bold border border-blue-200">Login Penjual</button>
+                            <button type="button" onclick="quickLogin('admin')" class="px-3 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 text-xs rounded-full font-bold border border-rose-200">Login Admin 👑</button>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Nama Lengkap</label>
+                        <input type="text" id="reg-name" placeholder="Nama lengkap Anda" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Username Baru</label>
+                        <input type="text" id="reg-username" placeholder="Buat username unik" class="w-full px-4 py-3 rounded-xl
